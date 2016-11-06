@@ -13,6 +13,13 @@
 
 <script>
 import Lib from 'assets/Lib.js'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
     data() {
         return {
@@ -51,7 +58,7 @@ export default {
     components: {
     },
     ready() {
-      this.$http.get(`${Lib.C.mOrderApi}materialSubOrders`, {
+      axios.get(`${Lib.C.mOrderApi}materialSubOrders`, {
         params: {
           filter: `guideId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,2]`
         }
@@ -59,7 +66,7 @@ export default {
         res.data.data.map((e) => {
           this.zcList.push(e)
         })
-      }, (res) => {
+      }).catch((res) => {
         alert("获取订单失败，请稍候再试QAQ")
       })
     },

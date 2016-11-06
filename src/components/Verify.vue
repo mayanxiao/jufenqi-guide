@@ -47,13 +47,12 @@ export default {
     send(){
       let that = this
       this.$parent.loading=true
-      this.$http.post(`${Lib.C.userApi}sms/sendCode`, {
-        mobile: this.$parent.phoneNumber
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.userApi}sms/sendCode`, {}, {
+        params: {
+            mobile: this.$parent.phoneNumber
         },
-        emulateJSON: true
+        withCredentials: true,
+        responseType: 'json'
       }).then((res)=>{
         this.$parent.loading = false
         this.time = 60
@@ -63,7 +62,7 @@ export default {
             clearInterval(that.timekeeper)
           }
         },1000)
-      },(res)=>{
+      }).catch((res)=>{
         this.$parent.loading = false
         alert("发送验证码失败，请稍后重试...")
       })
@@ -86,20 +85,18 @@ export default {
       return num
     },
     submit(){
-      this.$http.post(`${Lib.C.userApi}auth/registerUsingMobile`, {
-        mobile: this.$parent.phoneNumber,
-        userId: JSON.parse(localStorage.getItem("user")).userId,
-        code: this.verifyNumber,
-        // password:??
-      }, {
-        xhr: {
-          withCredentials: true
+      axios.post(`${Lib.C.userApi}auth/registerUsingMobile`, {}, {
+        params: {
+            mobile: this.$parent.phoneNumber,
+            userId: JSON.parse(localStorage.getItem("user")).userId,
+            code: this.verifyNumber
         },
-        emulateJSON: true
+        withCredentials: true,
+        responseType: 'json'
       }).then((res)=>{
         window.localStorage.setItem("user",JSON.stringify(res.data.data))
         location.href = this.$parent.lastUrl
-      },(res)=>{
+      }).catch((res)=>{
         this.alarm = true
         this.$parent.loading = false
         this.msg = "验证码错误，请重试"

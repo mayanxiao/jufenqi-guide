@@ -65,6 +65,13 @@ import Group from 'vux-components/group'
 import Cell from 'vux-components/cell'
 // import JRadio from 'components/JRadio.vue'
 // import PopupPicker from 'vux-components/popup-picker'
+import axios from 'axios'
+try{
+  axios.defaults.headers.common['x-user-token'] = JSON.parse(localStorage.getItem("user")).token
+}catch(e){
+  localStorage.clear()
+  window.location.href = `./wxAuth.html?url=index.html`
+}
 export default {
   data() {
     return {
@@ -114,9 +121,9 @@ export default {
     }
   },
   ready() {
-    this.$http.get(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
+    axios.get(`${Lib.C.mOrderApi}materialOrders/${Lib.M.GetRequest().orderNo}`).then((res) => {
       this.order = res.data.data
-    }, (res) => {
+    }).catch((res) => {
       alert("获取订单失败，请稍候再试QAQ")
     })
   },
