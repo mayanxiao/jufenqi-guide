@@ -60,7 +60,8 @@ export default {
     ready() {
       axios.get(`${Lib.C.mOrderApi}materialSubOrders`, {
         params: {
-          filter: `guideId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,2]`
+          filter: `guideId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:1`,
+          sort: "createdAt,desc"
         }
       }).then((res) => {
         res.data.data.map((e) => {
