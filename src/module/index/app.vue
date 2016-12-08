@@ -18,6 +18,13 @@
                         <no-data v-if="list0.length==0"></no-data>
                         <div v-else v-for="order in list0">
                             <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.appt.createdAt)"></j-order-block>
+                            <!-- 在待支付时暂未分单，使用的是appointment -->
+                            <div class="stores" style="margin-bottom: 10px;">
+                                <div class="store">
+                                    <div class="store-name">{{order.storeName}}</div>
+                                    <div class="store-amount">{{order.totalAmount|currency '￥' 2}}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </scroller>
@@ -56,6 +63,13 @@
                         <no-data v-if="list2.length==0"></no-data>
                         <div v-else v-for="order in list2">
                             <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
+                            <!-- 在待支付时暂未分单，使用的是appointment -->
+                            <div class="stores" style="margin-bottom: 10px;">
+                                <div class="store">
+                                    <div class="store-name">{{order.storeName}}</div>
+                                    <div class="store-amount">{{order.totalAmount|currency '￥' 2}}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </scroller>
@@ -68,6 +82,13 @@
                         <no-data v-if="list3.length==0"></no-data>
                         <div v-else v-for="order in list3">
                             <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
+                            <!-- 在待支付时暂未分单，使用的是appointment -->
+                            <div class="stores" style="margin-bottom: 10px;">
+                                <div class="store">
+                                    <div class="store-name">{{order.storeName}}</div>
+                                    <div class="store-amount">{{order.totalAmount|currency '￥' 2}}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </scroller>
@@ -82,11 +103,10 @@
                             <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores" style="margin-bottom: 10px;">
-                                <div class="store" v-for="store in order.orders">
-                                    <div class="store-name">{{store.storeName}}</div>
-                                    <div class="store-amount">{{store.totalAmount|currency '￥' 2}}</div>
+                                <div class="store">
+                                    <div class="store-name">{{order.storeName}}</div>
+                                    <div class="store-amount">{{order.totalAmount|currency '￥' 2}}</div>
                                 </div>
-                                <div class="stores-amount">总计:{{order.totalAmount|currency '' 2}}</div>
                             </div>
                         </div>
                     </div>
@@ -210,8 +230,8 @@ export default {
             var D = (d.getDate() < 10 ? '0' + (d.getDate()) : d.getDate());
             return Y + M + D
         },
-        viewDetail(orderNo, apptNo) {
-            window.location.href = `zc-order.html?orderNo=${orderNo?orderNo:0}&apptNo=${apptNo?apptNo:0}`
+        viewDetail(orderNo) {
+            window.location.href = `zc-order.html?orderNo=${orderNo}`
         },
         getStoresAmount(stores) {
             let result = 0
