@@ -49,7 +49,7 @@
                                 <div class="bottom" v-tap="(this.tempOrderNo = order.orderNo,this.showConfirm.pay = true)">确认付款</div>
                             </div>
                             <div class="operate" v-if="order.appt.payMethod == 2">
-                                <div class="bottom" v-tap="(this.tempOrderNo = order.orderNo,this.showConfirm.stage = true)">确认付款</div>
+                                <div class="bottom" v-tap="insPay(order.orderNo,order.customerId)">分期付款</div>
                             </div>
                         </div>
                     </div>
@@ -118,6 +118,7 @@
         <p style="text-align:center;">是否确认用户已支付?</p>
     </confirm>
 </div>
+<loading :show="showLoading" text="正在加载..."></loading>
 <j-footer></j-footer>
 </template>
 
@@ -133,6 +134,7 @@ import Swiper from 'vux-components/swiper'
 import SwiperItem from 'vux-components/swiper-item'
 import Scroller from 'vux-components/scroller'
 import JOrderBlock from 'common/components/j-order-block'
+import Loading from 'vux-components/loading'
 import NoData from 'common/components/no-data'
 import axios from 'axios'
 import Status from 'common/status'
@@ -160,13 +162,15 @@ export default {
             tempOrderNo: null,
             showConfirm: {
                 pay: false
-            }
+            },
+            showLoading: false
         }
     },
     components: {
         Tab,
         TabItem,
         Swiper,
+        Loading,
         SwiperItem,
         Scroller,
         JOrderBlock,
@@ -241,11 +245,45 @@ export default {
             return result
         },
         pay(orderNo) {
-            axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment`,{params:{}}).then((res) => {
+            this.showLoading = true
+            axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment`, {
+                params: {}
+            }).then((res) => {
                 alert('确认收款成功！')
                 location.reload()
             }).catch((err) => {
                 alert('网络连接失败，请重试')
+                this.showLoading = false
+                throw err
+            })
+        },
+        insPay(orderNo, customerId) {
+            this.showLoading = true
+            axios.get(`${Lib.C.loanApi}loan-applications/`, {
+                params: {
+                    filter: `userId:${customerId}|statusEnum:3`
+                }
+            }).then((res) => {
+                if (res.data.data[0].bankBranchPeriod == null) {
+
+                } else {
+                    let bbpId = res.data.data[0].bankBranchPeriod.id
+                    axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment`, {
+                        params: {
+                            bankBranchPeriodId: bbpId
+                        }
+                    }).then((res) => {
+                        alert('确认分期成功！')
+                        location.reload()
+                    }).catch((err) => {
+                        alert('网络连接失败，请重试')
+                        this.showLoading = false
+                        throw err
+                    })
+                }
+            }).catch((err) => {
+                alert('网络连接失败，请重试')
+                this.showLoading = false
                 throw err
             })
         }
