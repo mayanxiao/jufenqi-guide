@@ -268,11 +268,7 @@ export default {
 
                 } else {
                     let bbpId = res.data.data[0].bankBranchPeriod.id
-                    axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment`, {
-                        params: {
-                            bankBranchPeriodId: bbpId
-                        }
-                    }).then((res) => {
+                    axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment?bankBranchPeriodId=${bbpId}`).then((res) => {
                         alert('确认分期成功！')
                         location.reload()
                     }).catch((err) => {
