@@ -119,6 +119,8 @@
     </confirm>
 </div>
 <loading :show="showLoading" text="正在加载..."></loading>
+<popup-picker title="分期数" :data="insNumberList" :show.sync="showInsNumberPicker" :columns="1" :show-cell="false" :value.sync="insNumberSelect" @on-hide="onHideInsSelect" show-name v-ref:insNumber></popup-picker>
+
 <j-footer></j-footer>
 </template>
 
@@ -137,6 +139,7 @@ import JOrderBlock from 'common/components/j-order-block'
 import Loading from 'vux-components/loading'
 import NoData from 'common/components/no-data'
 import axios from 'axios'
+import PopupPicker from 'vux-components/popup-picker'
 import Status from 'common/status'
 try {
     let now = Number(new Date().getTime())
@@ -163,7 +166,11 @@ export default {
             showConfirm: {
                 pay: false
             },
-            showLoading: false
+            showLoading: false,
+            showInsNumberPicker: false,
+            insNumberList: [],
+            insNumberSelect: [],
+            tempOrderNo: null
         }
     },
     components: {
@@ -174,6 +181,7 @@ export default {
         SwiperItem,
         Scroller,
         JOrderBlock,
+        PopupPicker,
         JFooter,
         NoData,
         Confirm
@@ -265,7 +273,27 @@ export default {
                 }
             }).then((res) => {
                 if (res.data.data[0].bankBranchPeriod == null) {
-
+                    axios.get(`${Lib.C.loanApi}bank-branches/${res.data.data[0].bankBranch.id}`, {
+                        params: {
+                            expand: 'bankBranchPeriods'
+                        }
+                    }).then((res) => {
+                        this.insNumberList = []
+                        res.data.data.bankBranchPeriods.map((e) => {
+                            this.insNumberList.push({
+                                name: e.name,
+                                value: String(e.id),
+                            })
+                        })
+                        this.tempOrderNo = orderNo
+                        this.showInsNumberPicker = true
+                        this.showLoading = false
+                        console.log(this.insNumberList, this.showInsNumberPicker)
+                    }).catch((err) => {
+                        alert('网络连接失败，请重试')
+                        this.showLoading = false
+                        throw err
+                    })
                 } else {
                     let bbpId = res.data.data[0].bankBranchPeriod.id
                     axios.post(`${Lib.C.mOrderApi}materialOrders/${orderNo}/confirmPayment?bankBranchPeriodId=${bbpId}`).then((res) => {
@@ -282,6 +310,18 @@ export default {
                 this.showLoading = false
                 throw err
             })
+        },
+        onHideInsSelect() {
+            if (this.insNumberSelect.length) {
+                axios.post(`${Lib.C.mOrderApi}materialOrders/${this.tempOrderNo}/confirmPayment?bankBranchPeriodId=${this.insNumberSelect[0]}`).then((res) => {
+                    alert('确认分期成功！')
+                    location.reload()
+                }).catch((err) => {
+                    alert('网络连接失败，请重试')
+                    this.showLoading = false
+                    throw err
+                })
+            }
         }
     }
 }
