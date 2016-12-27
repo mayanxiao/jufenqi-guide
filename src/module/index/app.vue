@@ -196,6 +196,7 @@ export default {
                 size: 1000
             }
         }).then((res) => {
+            console.log(res)
             res.data.data.map((order) => {
                 switch (order.status) {
                     case 1:
@@ -229,6 +230,7 @@ export default {
             })
         }).catch((err) => {
             throw err
+            console.log(err)
         })
     },
     methods: {
