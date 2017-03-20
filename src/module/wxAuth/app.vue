@@ -36,6 +36,7 @@ export default {
                     return false;
                 })
             } else {
+                alert('再打个断点')
                 let a = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${location.href}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect`
                 location.href = a
             }
