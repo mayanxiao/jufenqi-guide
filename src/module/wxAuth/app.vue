@@ -31,7 +31,7 @@ export default {
                     withCredentials: true,
                     responseType: 'json'
                 }).then((res) => {
-                    window.localStorage.setItem("user", JSON.stringify(res.data.data))
+                    window.localStorage.setItem("guide", JSON.stringify(res.data.data))
                     location.href = this.lastUrl
                 }).catch((res) => {
                     alert("微信登录失败，请稍后重试")

@@ -17,7 +17,7 @@
                     <div>
                         <no-data v-if="list0.length==0"></no-data>
                         <div v-else v-for="order in list0">
-                            <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.appt.createdAt)"></j-order-block>
+                            <j-order-block :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.appt.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores" style="margin-bottom: 10px;">
                                 <div class="store">
@@ -36,7 +36,7 @@
                     <div>
                         <no-data v-if="list1.length==0"></no-data>
                         <div v-else v-for="order in list1">
-                            <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.appt.createdAt)"></j-order-block>
+                            <j-order-block :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.appt.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores">
                                 <div class="store" v-for="store in order.orders">
@@ -62,7 +62,7 @@
                     <div>
                         <no-data v-if="list2.length==0"></no-data>
                         <div v-else v-for="order in list2">
-                            <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
+                            <j-order-block :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores" style="margin-bottom: 10px;">
                                 <div class="store">
@@ -81,7 +81,7 @@
                     <div>
                         <no-data v-if="list3.length==0"></no-data>
                         <div v-else v-for="order in list3">
-                            <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
+                            <j-order-block :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores" style="margin-bottom: 10px;">
                                 <div class="store">
@@ -100,7 +100,7 @@
                     <div>
                         <no-data v-if="list4.length==0"></no-data>
                         <div v-else v-for="order in list4">
-                            <j-order-block v-tap="viewDetail(order.orderNo,order.appt.apptNo)" :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
+                            <j-order-block :img="order.appt.customerImage" :name="order.appt.customerName" :tel="order.appt.customerMobile" :time="getTime(order.createdAt)"></j-order-block>
                             <!-- 在待支付时暂未分单，使用的是appointment -->
                             <div class="stores" style="margin-bottom: 10px;">
                                 <div class="store">
@@ -142,15 +142,16 @@ import axios from 'axios'
 import PopupPicker from 'vux-components/popup-picker'
 import Status from 'common/status'
 try {
-    let now = Number(new Date().getTime())
-    if (Number(JSON.parse(localStorage.user).expiredAt) < now) {
-        localStorage.removeItem('user')
-        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-    }
-    axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("user")).tokenType + ' ' + JSON.parse(localStorage.getItem("user")).token
+    // let now = Number(new Date().getTime())
+    // if (Number(JSON.parse(localStorage.guide).expiredAt) < now) {
+    //     localStorage.removeItem('guide')
+    //     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+    // }
+    axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("guide")).tokenType + ' ' + JSON.parse(localStorage.getItem("guide")).token
 } catch (e) {
-    localStorage.clear()
-    window.location.href = `./wxAuth.html?url=index.html`
+    // localStorage.clear()
+    // window.location.href = `./wxAuth.html?url=index.html`
+    alert('失败！')
 }
 export default {
     data() {
@@ -191,7 +192,7 @@ export default {
         this.index = (Lib.M.GetRequest().type - 1) || 0
         axios.get(`${Lib.C.mOrderApi}materialOrders`, {
             params: {
-                filter: `guideId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,6]`,
+                filter: `guideId:${JSON.parse(window.localStorage.getItem('guide')).userId}|status:[1,6]`,
                 sort: 'createdAt,DESC',
                 size: 1000
             }
