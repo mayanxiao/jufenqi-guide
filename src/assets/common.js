@@ -41,7 +41,7 @@ var Rxports = {
     cb()
   },
   isAuth: () => {
-    if (window.localStorage.getItem('user')) {
+    if (window.localStorage.getItem('guide')) {
       return true
     } else {
       return false
