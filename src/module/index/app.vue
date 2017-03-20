@@ -142,6 +142,7 @@ import axios from 'axios'
 import PopupPicker from 'vux-components/popup-picker'
 import Status from 'common/status'
 try {
+
     let now = Number(new Date().getTime())
     if (Number(JSON.parse(localStorage.getItem('user')).expiredAt) < now) {
         alert('超时！')
@@ -195,7 +196,7 @@ export default {
         this.index = (Lib.M.GetRequest().type - 1) || 0
         axios.get(`${Lib.C.mOrderApi}materialOrders`, {
             params: {
-                filter: `guideId:${JSON.parse(window.localStorage.getItem('guide')).userId}|status:[1,6]`,
+                filter: `guideId:${JSON.parse(window.localStorage.getItem('user')).userId}|status:[1,6]`,
                 sort: 'createdAt,DESC',
                 size: 1000
             }
