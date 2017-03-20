@@ -28,7 +28,8 @@ export default {
                     responseType: 'json'
                 }).then((res) => {
                     window.localStorage.setItem("user", JSON.stringify(res.data.data))
-                    alert('打个断点')
+                    let a = JSON.parse(window.localStorage.getItem('user')).profile.nickname
+                    alert(a)
                     console.log(res.data.data)
                     location.href = this.lastUrl
                 }).catch((res) => {
