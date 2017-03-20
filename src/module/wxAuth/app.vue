@@ -30,7 +30,7 @@ export default {
                     window.localStorage.setItem("user", JSON.stringify(res.data.data))
                     alert('打个断点')
                     console.log(res.data.data)
-                    // location.href = this.lastUrl
+                    location.href = this.lastUrl
                 }).catch((res) => {
                     alert("微信登录失败，请稍后重试")
                     console.log(res)
