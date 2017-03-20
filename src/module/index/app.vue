@@ -142,16 +142,17 @@ import axios from 'axios'
 import PopupPicker from 'vux-components/popup-picker'
 import Status from 'common/status'
 try {
-    // let now = Number(new Date().getTime())
-    // if (Number(JSON.parse(localStorage.guide).expiredAt) < now) {
-    //     localStorage.removeItem('guide')
-    //     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-    // }
+    let now = Number(new Date().getTime())
+    if (Number(JSON.parse(localStorage.guide).expiredAt) < now) {
+        localStorage.removeItem('guide')
+        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+    }
     axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem("guide")).tokenType + ' ' + JSON.parse(localStorage.getItem("guide")).token
 } catch (e) {
-    // localStorage.clear()
-    // window.location.href = `./wxAuth.html?url=index.html`
-    alert('失败！')
+   alert('失败！')
+   localStorage.clear()
+   window.location.href = `./wxAuth.html?url=index.html`
+
 }
 export default {
     data() {
