@@ -14,11 +14,7 @@ export default {
         }
     },
     ready() {
-        if (Lib.M.isAuth()) {
-            location.href = this.lastUrl
-        } else {
-            this.getCode()
-        }
+        this.getCode()
     },
     methods: {
         getCode() {
