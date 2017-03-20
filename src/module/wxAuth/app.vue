@@ -32,6 +32,7 @@ export default {
                     responseType: 'json'
                 }).then((res) => {
                     window.localStorage.setItem("guide", JSON.stringify(res.data.data))
+                    alert('打个断点')
                     location.href = this.lastUrl
                 }).catch((res) => {
                     alert("微信登录失败，请稍后重试")
