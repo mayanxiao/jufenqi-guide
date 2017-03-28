@@ -30,7 +30,9 @@ export default {
                     window.localStorage.setItem("user", JSON.stringify(res.data.data))
                     let a = JSON.parse(window.localStorage.getItem('user')).profile.nickname
                     alert(a)
-                    console.log(res.data.data)
+
+                    axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')) //add header
+
                     location.href = this.lastUrl
                 }).catch((res) => {
                     alert("微信登录失败，请稍后重试")
