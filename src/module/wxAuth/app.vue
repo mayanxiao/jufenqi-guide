@@ -30,8 +30,7 @@ export default {
                     window.localStorage.setItem("user", JSON.stringify(res.data.data))
                     let a = JSON.parse(window.localStorage.getItem('user')).profile.nickname
                     alert(a)
-
-                    axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')) //add header
+                    axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')).token //add header
 
                     location.href = this.lastUrl
                 }).catch((res) => {
