@@ -256,23 +256,23 @@ import axios from 'axios'
 import PopupPicker from 'vux-components/popup-picker'
 import Status from 'common/status'
 
-try {
+// try {
 
-    // let now = Number(new Date().getTime())
-    // if (Number(JSON.parse(localStorage.getItem('user')).expiredAt) < now) {
-    //     alert('超时！')
-    //     localStorage.removeItem('user')
-    //     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-    // }
+//     let now = Number(new Date().getTime())
+//     if (Number(JSON.parse(localStorage.getItem('user')).expiredAt) < now) {
+//         alert('超时！')
+//         localStorage.removeItem('user')
+//         location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+//     }
 
-    // axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')).token
-    window.location.href = `./wxAuth.html?url=index.html`
-} catch (e) {
-   alert('失败！')
-   localStorage.clear()
-   window.location.href = `./wxAuth.html?url=index.html`
+//     axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')).token
+//     window.location.href = `./wxAuth.html?url=index.html`
+// } catch (e) {
+//    alert('失败！')
+//    localStorage.clear()
+//    window.location.href = `./wxAuth.html?url=index.html`
 
-}
+// }
 export default {
     data() {
         return {
