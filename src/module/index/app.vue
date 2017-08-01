@@ -258,12 +258,12 @@ import Status from 'common/status'
 
 try {
 
-    let now = Number(new Date().getTime())
-    if (Number(JSON.parse(localStorage.getItem('user')).expiredAt) < now) {
-        alert('超时！')
-        localStorage.removeItem('user')
-        location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
-    }
+    // let now = Number(new Date().getTime())
+    // if (Number(JSON.parse(localStorage.getItem('user')).expiredAt) < now) {
+    //     alert('超时！')
+    //     localStorage.removeItem('user')
+    //     location.href = './wxAuth.html?url=' + encodeURIComponent(location.href)
+    // }
 
     axios.defaults.headers.common['Authorization'] = JSON.parse(localStorage.getItem('user')).tokenType + ' ' + JSON.parse(localStorage.getItem('user')).token
     // window.location.href = `./wxAuth.html?url=index.html`
@@ -433,6 +433,8 @@ export default {
                 this.showLoading = false
                 throw err
             })
+            // axios.post(`https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${JSON.parse(localStorage.getItem('user')).token}`,{}).then((res) => {}).catch((err) => {})
+
         },
         onHideInsSelect() {
             if (this.insNumberSelect.length) {
